@@ -129,7 +129,7 @@ export default function TweetForm() {
             )}
           </div>
         </div>
-        <footer className="shrink-0 py-4 text-center">
+        <footer className="shrink-0 py-4 text-center flex flex-col gap-1">
           <p className="text-xs text-mid font-mono">
             Built by{" "}
             <a
@@ -140,6 +140,9 @@ export default function TweetForm() {
             >
               Serkan Ali
             </a>
+          </p>
+          <p className="text-xs text-mid/60 font-mono">
+            For personal archival of public content only. Respect copyright and platform terms of service.
           </p>
         </footer>
       </div>
@@ -178,7 +181,7 @@ export default function TweetForm() {
             </div>
           )}
         </div>
-        <footer className="shrink-0 py-2">
+        <footer className="shrink-0 py-2 flex flex-col gap-1">
           <p className="text-xs text-mid font-mono">
             Built by{" "}
             <a
@@ -189,6 +192,9 @@ export default function TweetForm() {
             >
               Serkan Ali
             </a>
+          </p>
+          <p className="text-xs text-mid/60 font-mono">
+            For personal archival of public content only. Respect copyright and platform terms of service.
           </p>
         </footer>
       </div>
