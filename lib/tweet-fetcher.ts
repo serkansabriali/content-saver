@@ -3,7 +3,7 @@ import type { TweetData } from "./types";
 
 type RawTweet = NonNullable<Awaited<ReturnType<typeof getTweet>>>;
 
-function mapReactTweetToTweetData(tweet: RawTweet): TweetData {
+function mapReactTweetToTweetData(tweet: RawTweet, fullText?: string): TweetData {
   const media: TweetData["media"] = tweet.mediaDetails?.map((m) => ({
     type:
       m.type === "animated_gif"
@@ -17,7 +17,7 @@ function mapReactTweetToTweetData(tweet: RawTweet): TweetData {
 
   return {
     id: tweet.id_str,
-    text: tweet.text,
+    text: fullText ?? tweet.text,
     author: {
       name: tweet.user.name,
       handle: tweet.user.screen_name,
@@ -29,10 +29,28 @@ function mapReactTweetToTweetData(tweet: RawTweet): TweetData {
   };
 }
 
+async function fetchFullTextFromFxTwitter(id: string): Promise<string | undefined> {
+  try {
+    const res = await fetch(`https://api.fxtwitter.com/status/${id}`);
+    if (res.ok) {
+      const data = await res.json();
+      return data.tweet?.text ?? undefined;
+    }
+  } catch {
+    // ignore
+  }
+  return undefined;
+}
+
 export async function fetchTweet(id: string): Promise<TweetData | null> {
   try {
     const tweet = await getTweet(id);
-    if (tweet) return mapReactTweetToTweetData(tweet);
+    if (tweet) {
+      const fullText = tweet.note_tweet
+        ? await fetchFullTextFromFxTwitter(id)
+        : undefined;
+      return mapReactTweetToTweetData(tweet, fullText);
+    }
   } catch {
     // Fall through to fallback
   }
@@ -176,7 +194,10 @@ async function walkBackward(id: string): Promise<TweetData[]> {
       const rawTweet = await getTweet(currentId);
       if (!rawTweet) break;
 
-      tweets.unshift(mapReactTweetToTweetData(rawTweet));
+      const fullText = rawTweet.note_tweet
+        ? await fetchFullTextFromFxTwitter(currentId)
+        : undefined;
+      tweets.unshift(mapReactTweetToTweetData(rawTweet, fullText));
 
       if (
         rawTweet.in_reply_to_status_id_str &&
