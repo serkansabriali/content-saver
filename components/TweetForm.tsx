@@ -12,6 +12,13 @@ export default function TweetForm() {
   const [error, setError] = useState<string | null>(null);
   const [markdown, setMarkdown] = useState<string | null>(null);
   const [filename, setFilename] = useState("");
+  const [includeFrontMatter, setIncludeFrontMatter] = useState(true);
+
+  function stripFrontMatter(md: string): string {
+    const parts = md.split("---\n");
+    if (parts.length >= 3) return parts.slice(2).join("---\n").trimStart();
+    return md;
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -139,6 +146,10 @@ export default function TweetForm() {
     );
   }
 
+  const displayMarkdown = markdown
+    ? includeFrontMatter ? markdown : stripFrontMatter(markdown)
+    : null;
+
   // ── Loading / Results state: two-column fluid layout ─────────────────────
   return (
     <div className="lg:h-screen lg:overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-6 px-6 py-4 lg:items-start">
@@ -157,8 +168,8 @@ export default function TweetForm() {
           </div>
         )}
         <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
-          {markdown ? (
-            <MarkdownPreview markdown={markdown} view="raw" />
+          {displayMarkdown ? (
+            <MarkdownPreview markdown={displayMarkdown} view="raw" />
           ) : (
             <div aria-busy="true" aria-label="Loading content" className="flex-1 flex flex-col gap-3 pt-2">
               {[...Array(8)].map((_, i) => (
@@ -188,10 +199,24 @@ export default function TweetForm() {
           <span className="text-xs font-mono uppercase tracking-widest text-mid">
             Preview
           </span>
-          {markdown && <ExportButtons markdown={markdown} filename={filename} />}
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              role="switch"
+              aria-checked={includeFrontMatter}
+              onClick={() => setIncludeFrontMatter((v) => !v)}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-md font-mono text-xs uppercase tracking-widest text-mid hover:bg-rule/40 hover:text-ink active:bg-rule/70 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 select-none"
+            >
+              Front-matter
+              <span className={`relative w-7 h-3.5 rounded-full transition-colors ${includeFrontMatter ? "bg-accent" : "bg-rule"}`}>
+                <span className={`absolute top-0.5 left-0.5 w-2.5 h-2.5 rounded-full bg-white transition-transform ${includeFrontMatter ? "translate-x-3.5" : "translate-x-0"}`} />
+              </span>
+            </button>
+            {displayMarkdown && <ExportButtons markdown={displayMarkdown} filename={filename} />}
+          </div>
         </div>
-        {markdown ? (
-          <MarkdownPreview markdown={markdown} view="preview" />
+        {displayMarkdown ? (
+          <MarkdownPreview markdown={displayMarkdown} view="preview" />
         ) : (
           <div aria-hidden="true" className="flex flex-col gap-4 px-4">
             <div className="h-6 w-2/3 rounded bg-rule/50 animate-pulse" />
