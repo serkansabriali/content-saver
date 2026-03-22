@@ -41,11 +41,11 @@ export default function ExportButtons({ markdown, filename }: ExportButtonsProps
   }
 
   return (
-    <div className="flex items-center gap-8">
+    <div className="flex items-center gap-2">
       <button
         type="button"
         onClick={handleDownload}
-        className="flex items-center gap-1.5 py-1 font-mono text-xs uppercase tracking-widest text-mid hover:text-ink transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
+        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md font-mono text-xs uppercase tracking-widest text-mid hover:bg-rule/40 hover:text-ink active:bg-rule/70 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
       >
         Download .md
         <svg
@@ -59,6 +59,7 @@ export default function ExportButtons({ markdown, filename }: ExportButtonsProps
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
+          className="shrink-0"
         >
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
           <polyline points="7 10 12 15 17 10" />
@@ -69,7 +70,7 @@ export default function ExportButtons({ markdown, filename }: ExportButtonsProps
         type="button"
         onClick={handleCopy}
         aria-live="polite"
-        className="flex items-center gap-1.5 py-1 font-mono text-xs uppercase tracking-widest text-accent hover:text-accent/90 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
+        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md font-mono text-xs uppercase tracking-widest text-accent hover:bg-accent/10 active:bg-accent/20 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
       >
         {copied ? "Copied!" : "Copy to Clipboard"}
         <svg
@@ -83,6 +84,7 @@ export default function ExportButtons({ markdown, filename }: ExportButtonsProps
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
+          className="shrink-0"
         >
           <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
           <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
