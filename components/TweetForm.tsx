@@ -52,30 +52,40 @@ export default function TweetForm() {
   }
 
   const form = (
-    <form onSubmit={handleSubmit} className="flex gap-3 w-full">
+    <form onSubmit={handleSubmit} className="flex gap-3 w-full" aria-label="Save tweet or thread">
       <input
+        id="tweet-url"
         type="url"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
-        placeholder="Paste a tweet or thread URL (e.g. https://x.com/user/status/123)"
+        placeholder="Paste a tweet or thread URL..."
         required
-        className="flex-1 px-4 py-3 rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        aria-label="Tweet or thread URL"
+        aria-describedby={error ? "tweet-url-error" : undefined}
+        className="flex-1 px-4 py-3 rounded-lg border border-rule bg-card text-ink placeholder-mid focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent shadow-rest"
       />
       <button
         type="submit"
         disabled={loading}
-        className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium cursor-pointer whitespace-nowrap"
+        aria-busy={loading}
+        className="flex items-center gap-1.5 py-3 font-mono text-xs uppercase tracking-widest text-accent hover:text-accent/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
       >
         {loading ? (
-          <span className="flex items-center gap-2">
-            <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+          <>
+            Fetching...
+            <svg aria-hidden="true" className="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
-            Fetching...
-          </span>
+          </>
         ) : (
-          "Save Tweet"
+          <>
+            Save Tweet
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </>
         )}
       </button>
     </form>
@@ -88,14 +98,14 @@ export default function TweetForm() {
         <div className="flex flex-col items-center justify-center flex-1 px-4 pb-16">
           <div className="w-full max-w-xl flex flex-col items-center gap-6">
             <div className="text-center">
-              <h1 className="text-2xl font-bold">Content Saver</h1>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
+              <h1 className="text-2xl font-black tracking-tight">Content Saver</h1>
+              <p className="text-xs font-mono uppercase tracking-widest text-mid mt-1">
                 Save tweets and threads as markdown
               </p>
             </div>
             {form}
             {error && (
-              <div className="w-full p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-400 text-sm">
+              <div id="tweet-url-error" role="alert" aria-live="assertive" className="w-full p-4 bg-error/5 border border-error/30 rounded-lg text-error text-sm">
                 {error}
               </div>
             )}
@@ -111,14 +121,14 @@ export default function TweetForm() {
       {/* Left column: fixed to viewport height, raw markdown scrolls internally */}
       <div className="lg:h-full flex flex-col gap-4 py-2 overflow-hidden">
         <div className="shrink-0">
-          <h1 className="text-2xl font-bold">Content Saver</h1>
-          <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
+          <h1 className="text-2xl font-black tracking-tight">Content Saver</h1>
+          <p className="text-xs font-mono uppercase tracking-widest text-mid mt-1">
             Save tweets and threads as markdown
           </p>
         </div>
         <div className="shrink-0">{form}</div>
         {error && (
-          <div className="shrink-0 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-400 text-sm">
+          <div id="tweet-url-error" role="alert" aria-live="assertive" className="shrink-0 p-4 bg-error/5 border border-error/30 rounded-lg text-error text-sm">
             {error}
           </div>
         )}
@@ -129,8 +139,8 @@ export default function TweetForm() {
 
       {/* Right column: independent scroll within viewport */}
       <div className="lg:h-full lg:overflow-y-auto flex flex-col gap-4 py-2">
-        <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-2 bg-white dark:bg-neutral-900">
-          <span className="text-base font-semibold text-neutral-800 dark:text-neutral-200">
+        <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-2 bg-bg">
+          <span className="text-xs font-mono uppercase tracking-widest text-mid">
             Preview
           </span>
           <ExportButtons markdown={markdown} filename={filename} />

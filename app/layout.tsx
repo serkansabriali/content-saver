@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import ThemeProvider from "@/components/ThemeProvider";
+import { Inter, DM_Mono } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
+const dmMono = DM_Mono({
+  weight: ["300", "400", "500"],
+  subsets: ["latin"],
+  variable: "--font-dm-mono",
+});
 
 export const metadata: Metadata = {
   title: "Content Saver",
@@ -16,13 +20,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.className} bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 min-h-screen`}
-      >
-        <ThemeProvider>
-          <main>{children}</main>
-        </ThemeProvider>
+    <html lang="en">
+      <body className={`${inter.className} ${dmMono.variable} bg-bg text-ink min-h-screen`}>
+        <main>{children}</main>
       </body>
     </html>
   );

@@ -41,35 +41,18 @@ export default function ExportButtons({ markdown, filename }: ExportButtonsProps
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-8">
       <button
-        onClick={handleCopy}
-        className="flex items-center gap-2 px-4 py-2 bg-neutral-800 text-white rounded-lg hover:bg-neutral-700 dark:bg-neutral-200 dark:text-neutral-900 dark:hover:bg-neutral-300 transition-colors cursor-pointer"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-        </svg>
-        {copied ? "Copied!" : "Copy to Clipboard"}
-      </button>
-      <button
+        type="button"
         onClick={handleDownload}
-        className="flex items-center gap-2 px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer"
+        className="flex items-center gap-1.5 py-1 font-mono text-xs uppercase tracking-widest text-mid hover:text-ink transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
       >
+        Download .md
         <svg
+          aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
+          width="13"
+          height="13"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -81,7 +64,29 @@ export default function ExportButtons({ markdown, filename }: ExportButtonsProps
           <polyline points="7 10 12 15 17 10" />
           <line x1="12" x2="12" y1="15" y2="3" />
         </svg>
-        Download .md
+      </button>
+      <button
+        type="button"
+        onClick={handleCopy}
+        aria-live="polite"
+        className="flex items-center gap-1.5 py-1 font-mono text-xs uppercase tracking-widest text-accent hover:text-accent/90 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
+      >
+        {copied ? "Copied!" : "Copy to Clipboard"}
+        <svg
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+        </svg>
       </button>
     </div>
   );
