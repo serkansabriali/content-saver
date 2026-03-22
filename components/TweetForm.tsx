@@ -98,6 +98,23 @@ export default function TweetForm() {
               </p>
             </div>
             {form}
+            <div className="w-full flex flex-col gap-4 text-center">
+              <p className="text-xs font-mono uppercase tracking-widest text-mid">How it works</p>
+              <div className="grid grid-cols-4 gap-3 text-left">
+                {[
+                  { n: "01", label: "Copy link", desc: "Grab the URL of any tweet, thread, or article on X/Twitter" },
+                  { n: "02", label: "Paste & save", desc: "Paste it into the input above and press enter" },
+                  { n: "03", label: "Preview", desc: "Review the generated Markdown with YAML front-matter" },
+                  { n: "04", label: "Export", desc: "Copy or download and paste into your note-taking app" },
+                ].map(({ n, label, desc }) => (
+                  <div key={n} className="flex flex-col gap-2 p-3 rounded-lg border border-rule bg-rule/30">
+                    <span className="font-mono text-xs text-accent">{n}</span>
+                    <span className="text-xs font-semibold tracking-tight text-ink">{label}</span>
+                    <span className="text-xs text-mid leading-relaxed">{desc}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
             {error && (
               <div id="tweet-url-error" role="alert" aria-live="assertive" className="w-full p-4 bg-error/5 border border-error/30 rounded-lg text-error text-sm">
                 {error}
