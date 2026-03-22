@@ -107,7 +107,7 @@ export default function TweetForm() {
             {form}
             <div className="w-full flex flex-col gap-4 text-center">
               <p className="text-xs font-mono uppercase tracking-widest text-mid">How it works</p>
-              <div className="grid grid-cols-4 gap-3 text-left">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
                 {[
                   { n: "01", label: "Copy link", desc: "Grab the URL of any tweet, thread, or article on X/Twitter" },
                   { n: "02", label: "Paste & save", desc: "Paste it into the input above and press enter" },
@@ -155,6 +155,7 @@ export default function TweetForm() {
 
   // ── Loading / Results state: two-column fluid layout ─────────────────────
   return (
+    <>
     <div className="lg:h-screen lg:overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-6 px-6 py-4 lg:items-start">
       {/* Left column: fixed to viewport height, raw markdown scrolls internally */}
       <div className="lg:h-full flex flex-col gap-4 py-2 overflow-hidden">
@@ -181,26 +182,10 @@ export default function TweetForm() {
             </div>
           )}
         </div>
-        <footer className="shrink-0 py-2 flex flex-col gap-1">
-          <p className="text-xs text-mid font-mono">
-            Built by{" "}
-            <a
-              href="https://serkanali.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:text-accent/80 transition-colors"
-            >
-              Serkan Ali
-            </a>
-          </p>
-          <p className="text-xs text-mid/60 font-mono">
-            For personal archival of public content only. Respect copyright and platform terms of service.
-          </p>
-        </footer>
       </div>
 
       {/* Right column: independent scroll within viewport */}
-      <div className="lg:h-full lg:overflow-y-auto flex flex-col gap-4 py-2">
+      <div className="lg:h-full lg:overflow-y-auto flex flex-col gap-4 py-2 pb-32 lg:pb-2">
         <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-3 bg-bg">
           <span className="text-xs font-mono uppercase tracking-widest text-mid">
             Preview
@@ -213,12 +198,12 @@ export default function TweetForm() {
               onClick={() => setIncludeFrontMatter((v) => !v)}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-md font-mono text-xs uppercase tracking-widest text-mid hover:bg-rule/40 hover:text-ink active:bg-rule/70 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 select-none"
             >
-              Front-matter
-              <span className={`relative w-7 h-3.5 rounded-full transition-colors ${includeFrontMatter ? "bg-accent" : "bg-rule"}`}>
+              <span className="leading-none">Front-matter</span>
+              <span className={`relative inline-block w-7 h-3.5 rounded-full transition-colors shrink-0 ${includeFrontMatter ? "bg-accent" : "bg-rule"}`}>
                 <span className={`absolute top-0.5 left-0.5 w-2.5 h-2.5 rounded-full bg-white transition-transform ${includeFrontMatter ? "translate-x-3.5" : "translate-x-0"}`} />
               </span>
             </button>
-            {displayMarkdown && <ExportButtons markdown={displayMarkdown} filename={filename} />}
+            {displayMarkdown && <div className="hidden lg:flex"><ExportButtons markdown={displayMarkdown} filename={filename} /></div>}
           </div>
         </div>
         {displayMarkdown ? (
@@ -234,7 +219,26 @@ export default function TweetForm() {
             ))}
           </div>
         )}
+        <footer className="py-4 flex flex-col gap-1 text-center">
+          <p className="text-xs text-mid font-mono">
+            Built by{" "}
+            <a href="https://serkanali.com" target="_blank" rel="noopener noreferrer" className="text-accent hover:text-accent/80 transition-colors">
+              Serkan Ali
+            </a>
+          </p>
+          <p className="text-xs text-mid/60 font-mono">
+            For personal archival of public content only. Respect copyright and platform terms of service.
+          </p>
+        </footer>
       </div>
     </div>
+
+    {/* Fixed bottom export bar */}
+    {displayMarkdown && (
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-20 bg-bg border-t border-rule px-4 py-3">
+        <ExportButtons markdown={displayMarkdown} filename={filename} className="flex items-center gap-3 w-full [&>button]:flex-1" />
+      </div>
+    )}
+    </>
   );
 }

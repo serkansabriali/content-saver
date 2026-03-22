@@ -5,9 +5,10 @@ import { useState } from "react";
 interface ExportButtonsProps {
   markdown: string;
   filename: string;
+  className?: string;
 }
 
-export default function ExportButtons({ markdown, filename }: ExportButtonsProps) {
+export default function ExportButtons({ markdown, filename, className }: ExportButtonsProps) {
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
@@ -41,7 +42,7 @@ export default function ExportButtons({ markdown, filename }: ExportButtonsProps
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className={className ?? "flex items-center gap-2"}>
       <button
         type="button"
         onClick={handleDownload}

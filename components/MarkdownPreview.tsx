@@ -41,7 +41,7 @@ export default function MarkdownPreview({ markdown, view }: MarkdownPreviewProps
           </span>
         </div>
         <div className="p-4 overflow-y-auto flex-1 min-h-0 bg-card">
-          <pre className="text-sm font-mono whitespace-pre-wrap text-ink">
+          <pre className="text-sm font-mono whitespace-pre-wrap break-all text-ink">
             {markdown}
           </pre>
         </div>
@@ -51,18 +51,18 @@ export default function MarkdownPreview({ markdown, view }: MarkdownPreviewProps
 
   // Preview: no container, content flows naturally for page scroll
   return (
-    <div className="space-y-4 px-4">
+    <div className="space-y-4">
       {frontmatter && (
         <div className="bg-rule/30 rounded-md p-3 text-sm">
           {frontmatter.split("\n").map((line, i) => {
             const [key, ...rest] = line.split(": ");
             const value = rest.join(": ");
             return (
-              <div key={i} className="flex gap-2">
-                <span className="font-mono text-mid min-w-[80px]">
+              <div key={i} className="flex gap-2 min-w-0">
+                <span className="font-mono text-mid min-w-[80px] shrink-0">
                   {key}
                 </span>
-                <span className="text-ink">{value}</span>
+                <span className="text-ink break-all min-w-0">{value}</span>
               </div>
             );
           })}
